@@ -1,0 +1,17 @@
+# Packages explicitly disabled for user 0 on MiTV-AXSO0 (dangal).
+# Source: `pm list packages -d`, 2026-10-21.
+# com.mitv.tvhome.mitvplus is the TV+ stub installed by apply_popup_fix.sh.
+com.android.printspooler
+com.google.android.katniss
+com.google.android.leanbacklauncher.recommendations
+com.google.android.tvlauncher
+com.google.android.tvrecommendations
+com.google.android.videos
+com.google.android.youtube.tvmusic
+com.mitv.tvhome.mitvplus
+com.miui.tv.analytics
+com.xiaomi.mimusic2
+com.xiaomi.mitv.handbook
+com.xiaomi.mitv.tvmanager
+com.xiaomi.mitv.updateservice
+com.xiaomi.statistic

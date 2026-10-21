@@ -1,0 +1,7 @@
+# Proprietary Xiaomi APK backups stay local.
+backup/*
+!backup/SHA256SUMS.txt
+
+# Local noise
+*.log
+.DS_Store
