@@ -9,7 +9,7 @@ A set of ADB scripts for an **unrooted Xiaomi Mi TV**. It:
 1. Stops PatchWall's **“Xiaomi TV+ / Instal apl ini?”** popup.
 2. Disables PatchWall's background and telemetry components.
 3. Stops seven media/store apps from auto-starting after reboot.
-4. Makes **Quasar** (`com.quasartv.launcher`) the default home screen.
+4. Makes **Quasar** (`com.quasartv.launcher`, self-made) the default home screen.
 5. Re-applies the 14 packages that were already disabled on the tested TV.
 
 It does **not** modify the PatchWall APK, does **not** need root, and does **not** factory-reset the TV.
@@ -25,6 +25,7 @@ Use it only on the same model and firmware it was tested on:
 | RAM | 1 GB |
 | PatchWall | `com.mitv.tvhome.atv` 4.4.23 (system base 3.8.2) |
 | Root | No — bootloader locked, no `su` |
+| Launcher | Quasar (`com.quasartv.launcher`, self-made); stock Google TV launcher disabled |
 | Verified on a real TV | Yes |
 
 Other Mi TV models can use different package and component names. Running the scripts blindly on a different TV can disable the wrong things. Check the package lists below against your own TV first.
@@ -46,7 +47,7 @@ These are the packages that were disabled on the tested TV. Most were already of
 | Android Print Spooler | `com.android.printspooler` |
 | Google TV search (Katniss) | `com.google.android.katniss` |
 | Google TV launcher recommendations | `com.google.android.leanbacklauncher.recommendations` |
-| Google TV launcher | `com.google.android.tvlauncher` |
+| Stock Google TV launcher (original default) | `com.google.android.tvlauncher` |
 | Google TV recommendations | `com.google.android.tvrecommendations` |
 | Google Play Movies & TV | `com.google.android.videos` |
 | YouTube Music for TV | `com.google.android.youtube.tvmusic` |
@@ -90,7 +91,7 @@ The Play Store will not auto-update apps until you open it. PatchWall cold-start
 
 ### 5. Quasar as the default home
 
-`ensure_quasar_home.sh` sets `com.quasartv.launcher/.MainActivity` as the default HOME. `com.tvlauncher` remains installed and enabled as a secondary home candidate, but it is not the default. No script stops or disables Quasar or `com.tvlauncher`.
+`ensure_quasar_home.sh` sets `com.quasartv.launcher/.MainActivity` as the default HOME. Quasar is the self-made launcher. The stock Google TV launcher (`com.google.android.tvlauncher`) was already disabled before this repo. `com.tvlauncher` is a third-party launcher installed before Quasar; it remains installed and enabled as a secondary HOME candidate, but it is not the default. No script stops or disables Quasar or `com.tvlauncher`.
 
 ## Before you start
 
@@ -180,6 +181,7 @@ Re-enabling analytics, statistics, or the update service may bring back telemetr
 - **YouTube ads stay.** This does not patch YouTube or block its ads.
 - **The TV+ dummy conflicts with the real Xiaomi TV+.** Uninstall it before installing the real app.
 - **ADB is powerful.** Port 5555 can run system-level commands on this TV. Keep ADB off when you are done and do not expose it to untrusted networks.
+- **Launcher names are easy to confuse.** `com.quasartv.launcher` is Quasar (self-made, current default). `com.tvlauncher` is an older third-party launcher, not the OEM default. The stock Google TV launcher is `com.google.android.tvlauncher`, and it is disabled.
 - **This is model-specific.** Do not run it on another Mi TV without checking the packages and components first.
 
 ## Files

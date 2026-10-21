@@ -1,6 +1,9 @@
 # Packages explicitly disabled for user 0 on MiTV-AXSO0 (dangal).
 # Source: `pm list packages -d`, 2026-10-21.
 # com.mitv.tvhome.mitvplus is the TV+ stub installed by apply_popup_fix.sh.
+# com.google.android.tvlauncher is the stock Google TV launcher (original
+# default, already disabled). com.tvlauncher is a separate third-party
+# launcher installed before Quasar; it is not in this list.
 com.android.printspooler
 com.google.android.katniss
 com.google.android.leanbacklauncher.recommendations

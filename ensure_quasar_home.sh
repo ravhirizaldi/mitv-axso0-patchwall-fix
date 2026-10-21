@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Force com.quasartv.launcher as the default HOME activity and verify it.
+# Force the self-made Quasar launcher (com.quasartv.launcher) as default HOME and verify it.
 set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

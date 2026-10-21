@@ -291,11 +291,11 @@ ADB_SERIAL=192.0.2.10:5555 ./apply_all.sh   # replace with your device serial
 
 `apply_all.sh` runs the whole setup in order:
 
-1. `ensure_quasar_home.sh` — sets `com.quasartv.launcher/.MainActivity` as the default HOME and fails if the resolver does not return Quasar.
+1. `ensure_quasar_home.sh` — sets `com.quasartv.launcher/.MainActivity` (Quasar, self-made) as the default HOME and fails if the resolver does not return Quasar.
 2. `apply_popup_fix.sh` — installs and disables the TV+ stub.
 3. `apply_disabled_packages.sh` — disables every package in `disabled_packages.txt` through the TvService uid 1000 channel.
 4. `apply_debloat.sh` — the PatchWall background/telemetry component set.
-5. `apply_ram_guard.sh` — force-stop, AppOps, and boot-receiver block for the seven media/store apps. It calls the Quasar guard first and never touches either launcher.
+5. `apply_ram_guard.sh` — force-stop, AppOps, and boot-receiver block for the seven media/store apps. It calls the Quasar guard first and never touches Quasar or `com.tvlauncher`.
 
 Disabled packages on the device (`pm list packages -d`, all `enabled=3`):
 
@@ -316,4 +316,4 @@ com.xiaomi.mitv.updateservice
 com.xiaomi.statistic
 ```
 
-`com.tvlauncher` remains enabled as a secondary HOME candidate, but `cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME` returns `com.quasartv.launcher/.MainActivity`. The Quasar guard re-asserts that on every `apply_all.sh` / `apply_ram_guard.sh` run.
+`com.google.android.tvlauncher` is the stock Google TV launcher and was already disabled before this repo. `com.tvlauncher` is a third-party launcher installed before Quasar; it remains enabled as a secondary HOME candidate, but `cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME` returns `com.quasartv.launcher/.MainActivity`. The Quasar guard re-asserts that on every `apply_all.sh` / `apply_ram_guard.sh` run.
