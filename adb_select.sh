@@ -19,6 +19,7 @@ adb_select_device() {
     printf 'Install Android platform-tools, then run this script again.\n\n'
     printf 'Press Enter to quit...'
     read -r _ || true
+    printf '\n'
     exit 1
   fi
 
@@ -26,6 +27,7 @@ adb_select_device() {
     printf '\nWARNING: could not query ADB devices.\n%s\n\n' "$devices_out"
     printf 'Press Enter to quit...'
     read -r _ || true
+    printf '\n'
     exit 1
   fi
 
@@ -63,6 +65,7 @@ adb_select_device() {
     fi
     printf '\nPress Enter to quit...'
     read -r _ || true
+    printf '\n'
     exit 1
   fi
 
