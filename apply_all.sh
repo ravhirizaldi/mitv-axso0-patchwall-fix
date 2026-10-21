@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Reapply the full MiTV-AXSO0 setup in order.
-# Quasar HOME -> TV+ stub -> disabled packages -> PatchWall debloat -> RAM guard.
+# Quasar install (if missing) + HOME -> TV+ stub -> disabled packages -> PatchWall debloat -> RAM guard.
 set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

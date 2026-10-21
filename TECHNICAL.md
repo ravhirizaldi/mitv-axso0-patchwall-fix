@@ -170,7 +170,7 @@ Without root, the available levers are package/component state (used here), appo
 ./apply_all.sh
 ```
 
-`apply_all.sh` asks for the ADB device when needed, installs the TV+ stub, re-disables the package inventory, reapplies the PatchWall component debloat, and runs the RAM guard. The popup fix does not need a reboot; package and component state persist.
+`apply_all.sh` asks for the ADB device when needed, installs Quasar from `quasar-release.apk` if it is missing, sets it as the default HOME, installs the TV+ stub, re-disables the package inventory, reapplies the PatchWall component debloat, and runs the RAM guard. The popup fix does not need a reboot; package and component state persist.
 
 Manual fallback:
 
@@ -185,12 +185,14 @@ adb shell am force-stop com.mitv.tvhome.atv
 
 ## 7. Files
 
+- `quasar-release.apk` — QuasarTV 1.0 release APK (package `com.quasartv.launcher`, versionCode 1, minSdk 28). SHA-256 `3a66107f0d4c3b7888c5c4512c3085a374dd9498a2e3b5f3fd47787ef0a044e6`; signed by `CN=Ravhi Rizaldi, OU=QuasarTV, O=QuasarTV, C=ID`.
+- `install_quasar.sh` — install/update `quasar-release.apk` with `adb install -r`.
+- `ensure_quasar_home.sh` — install Quasar if missing, then set `com.quasartv.launcher/.MainActivity` as default HOME.
 - `stub-tvplus.apk` — 8.5 KB dummy TV+ package; no code, no permissions, no components.
 - `adb_select.sh` — shared interactive ADB device selector.
-- `apply_all.sh` — full reapply: Quasar HOME, TV+ stub, disabled packages, PatchWall debloat, RAM guard.
+- `apply_all.sh` — full reapply: Quasar install (if missing) + HOME, TV+ stub, disabled packages, PatchWall debloat, RAM guard.
 - `apply_popup_fix.sh`, `revert_popup_fix.sh`
 - `apply_debloat.sh`, `revert_debloat.sh`
-- `ensure_quasar_home.sh`
 - `apply_disabled_packages.sh`, `disabled_packages.txt`
 - `apply_ram_guard.sh`, `revert_ram_guard.sh`
 - `backup/PatchWall-4.4.23-original.apk` — SHA-256 `de3fc8925f731e592308df17972c6dbf180065c86e51affabd370570dfd3dfdd` (local only, not committed — proprietary Xiaomi binary)
@@ -291,11 +293,11 @@ ADB_SERIAL=192.0.2.10:5555 ./apply_all.sh   # replace with your device serial
 
 `apply_all.sh` runs the whole setup in order:
 
-1. `ensure_quasar_home.sh` — sets `com.quasartv.launcher/.MainActivity` (Quasar, self-made) as the default HOME and fails if the resolver does not return Quasar.
+1. `ensure_quasar_home.sh` — installs `quasar-release.apk` if `com.quasartv.launcher` is missing, sets `com.quasartv.launcher/.MainActivity` as the default HOME, and fails if the resolver does not return Quasar.
 2. `apply_popup_fix.sh` — installs and disables the TV+ stub.
 3. `apply_disabled_packages.sh` — disables every package in `disabled_packages.txt` through the TvService uid 1000 channel.
 4. `apply_debloat.sh` — the PatchWall background/telemetry component set.
-5. `apply_ram_guard.sh` — force-stop, AppOps, and boot-receiver block for the seven media/store apps. It calls the Quasar guard first and never touches Quasar or `com.tvlauncher`.
+5. `apply_ram_guard.sh` — force-stop, AppOps, and boot-receiver block for the seven media/store apps. It calls the Quasar guard first and never touches Quasar.
 
 Disabled packages on the device (`pm list packages -d`, all `enabled=3`):
 
@@ -316,4 +318,4 @@ com.xiaomi.mitv.updateservice
 com.xiaomi.statistic
 ```
 
-`com.google.android.tvlauncher` is the stock Google TV launcher and was already disabled before this repo. `com.tvlauncher` is a third-party launcher installed before Quasar; it remains enabled as a secondary HOME candidate, but `cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME` returns `com.quasartv.launcher/.MainActivity`. The Quasar guard re-asserts that on every `apply_all.sh` / `apply_ram_guard.sh` run.
+`com.google.android.tvlauncher` is the stock Google TV launcher and was already disabled before this repo. Quasar (`com.quasartv.launcher`) is the self-made launcher bundled as `quasar-release.apk`; `cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME` returns `com.quasartv.launcher/.MainActivity`. The Quasar guard re-asserts that on every `apply_all.sh` / `apply_ram_guard.sh` run.

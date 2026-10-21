@@ -9,7 +9,7 @@ A set of ADB scripts for an **unrooted Xiaomi Mi TV**. It:
 1. Stops PatchWall's **“Xiaomi TV+ / Instal apl ini?”** popup.
 2. Disables PatchWall's background and telemetry components.
 3. Stops seven media/store apps from auto-starting after reboot.
-4. Makes **Quasar** (`com.quasartv.launcher`, self-made) the default home screen.
+4. Installs **Quasar** (`com.quasartv.launcher`, self-made) if missing and makes it the default home screen.
 5. Re-applies the 14 packages that were already disabled on the tested TV.
 
 It does **not** modify the PatchWall APK, does **not** need root, and does **not** factory-reset the TV.
@@ -25,7 +25,7 @@ Use it only on the same model and firmware it was tested on:
 | RAM | 1 GB |
 | PatchWall | `com.mitv.tvhome.atv` 4.4.23 (system base 3.8.2) |
 | Root | No — bootloader locked, no `su` |
-| Launcher | Quasar (`com.quasartv.launcher`, self-made); stock Google TV launcher disabled |
+| Launcher | Quasar (`com.quasartv.launcher`, self-made, bundled APK); stock Google TV launcher disabled |
 | Verified on a real TV | Yes |
 
 Other Mi TV models can use different package and component names. Running the scripts blindly on a different TV can disable the wrong things. Check the package lists below against your own TV first.
@@ -91,7 +91,9 @@ The Play Store will not auto-update apps until you open it. PatchWall cold-start
 
 ### 5. Quasar as the default home
 
-`ensure_quasar_home.sh` sets `com.quasartv.launcher/.MainActivity` as the default HOME. Quasar is the self-made launcher. The stock Google TV launcher (`com.google.android.tvlauncher`) was already disabled before this repo. `com.tvlauncher` is a third-party launcher installed before Quasar; it remains installed and enabled as a secondary HOME candidate, but it is not the default. No script stops or disables Quasar or `com.tvlauncher`.
+`ensure_quasar_home.sh` sets `com.quasartv.launcher/.MainActivity` as the default HOME. Quasar is the self-made launcher bundled in this repo as `quasar-release.apk` (QuasarTV 1.0). If Quasar is missing, the script installs the bundled APK first; if it is already installed, it only sets the default HOME. The stock Google TV launcher (`com.google.android.tvlauncher`) was already disabled before this repo.
+
+Bundled APK: `quasar-release.apk` — version 1.0 (versionCode 1), minSdk 28, release-signed. SHA-256: `3a66107f0d4c3b7888c5c4512c3085a374dd9498a2e3b5f3fd47787ef0a044e6`. Use `./install_quasar.sh` to install or update it manually. The install uses `adb install -r`; if a differently signed Quasar build is already installed, uninstall it first (that clears its data).
 
 ## Before you start
 
@@ -116,7 +118,7 @@ chmod +x *.sh                # only if the executable bit was lost
 `apply_all.sh` runs the setup in this order:
 
 1. Select the ADB device.
-2. Set Quasar as default HOME.
+2. Install Quasar if missing, then set it as default HOME.
 3. Install and disable the TV+ dummy.
 4. Re-disable the 14 packages.
 5. Disable the 10 PatchWall components.
@@ -181,7 +183,7 @@ Re-enabling analytics, statistics, or the update service may bring back telemetr
 - **YouTube ads stay.** This does not patch YouTube or block its ads.
 - **The TV+ dummy conflicts with the real Xiaomi TV+.** Uninstall it before installing the real app.
 - **ADB is powerful.** Port 5555 can run system-level commands on this TV. Keep ADB off when you are done and do not expose it to untrusted networks.
-- **Launcher names are easy to confuse.** `com.quasartv.launcher` is Quasar (self-made, current default). `com.tvlauncher` is an older third-party launcher, not the OEM default. The stock Google TV launcher is `com.google.android.tvlauncher`, and it is disabled.
+- **Quasar is bundled.** `quasar-release.apk` is the self-made launcher included in this repo. `ensure_quasar_home.sh` installs it only if missing; `install_quasar.sh` installs or updates it on demand.
 - **This is model-specific.** Do not run it on another Mi TV without checking the packages and components first.
 
 ## Files
@@ -190,7 +192,9 @@ Re-enabling analytics, statistics, or the update service may bring back telemetr
 |---|---|
 | `apply_all.sh` | Run everything in order |
 | `adb_select.sh` | Interactive ADB device picker |
-| `ensure_quasar_home.sh` | Set Quasar as default HOME |
+| `quasar-release.apk` | QuasarTV 1.0 release APK (self-made launcher) |
+| `install_quasar.sh` | Install/update Quasar from the bundled APK |
+| `ensure_quasar_home.sh` | Install Quasar if missing; set it as default HOME |
 | `apply_popup_fix.sh` / `revert_popup_fix.sh` | Install/remove the TV+ dummy |
 | `apply_debloat.sh` / `revert_debloat.sh` | Disable/restore the 10 PatchWall components |
 | `apply_disabled_packages.sh` | Re-disable the 14 packages in `disabled_packages.txt` |

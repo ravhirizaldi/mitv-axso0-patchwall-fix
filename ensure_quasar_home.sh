@@ -9,6 +9,22 @@ adb_select_device
 SERIAL="$ADB_SERIAL"
 
 adb -s "$SERIAL" wait-for-device
+
+installed_path=$(adb -s "$SERIAL" shell pm path com.quasartv.launcher 2>/dev/null | tr -d '\r' || true)
+case "$installed_path" in
+  package:*)
+    echo "Quasar is installed: $installed_path"
+    ;;
+  *)
+    if [ ! -f "$DIR/quasar-release.apk" ]; then
+      echo "ERROR: Quasar is not installed and $DIR/quasar-release.apk is missing" >&2
+      exit 1
+    fi
+    echo "Quasar is not installed; installing bundled quasar-release.apk..."
+    adb -s "$SERIAL" install -r "$DIR/quasar-release.apk"
+    ;;
+esac
+
 adb -s "$SERIAL" shell "cmd package set-home-activity --user 0 com.quasartv.launcher/.MainActivity"
 
 resolved=$(adb -s "$SERIAL" shell \
