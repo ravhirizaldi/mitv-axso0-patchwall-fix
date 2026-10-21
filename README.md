@@ -1,6 +1,6 @@
 # PatchWall on Mi TV AXSO0 — popup fix, debloat notes, APK-mod verdict
 
-> **Disclaimer:** This repository is AI-generated (LTX-quasar) and has been verified on a real TV — a MiTV-AXSO0 (`dangal`) running Android 9. Every procedure documented here was executed against the live device, and the results (popup gone, debloat applied, RAM guard active, Quasar as default HOME) were observed on-device. It is not affiliated with Xiaomi, Google, or any app vendor. Use at your own risk and read the scripts before running them.
+> **Disclaimer:** This repository was made by AI — no human hand on the keyboard, just a model with a plan and a terminal. It was then verified on a real TV: a MiTV-AXSO0 (`dangal`) running Android 9. Every procedure documented here was executed against the live device, and the results (popup gone, debloat applied, RAM guard active, Quasar as default HOME) were observed on-device. It is not affiliated with Xiaomi, Google, or any app vendor. Use at your own risk, and read the scripts before running them.
 
 Repository: <https://github.com/ravhirizaldi/mitv-axso0-patchwall-fix>
 
